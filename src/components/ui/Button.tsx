@@ -50,7 +50,7 @@ export function Button({
       case 'outline':
         return { bg: 'transparent', fg: colors.textPrimary, border: colors.borderStrong };
       case 'danger':
-        return { bg: colors.danger, fg: '#FFFFFF' };
+        return { bg: colors.danger, fg: colors.onAccent };
       case 'ghost':
         return { bg: 'transparent', fg: colors.accent };
     }

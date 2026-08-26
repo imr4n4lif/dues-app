@@ -68,7 +68,7 @@ export function buildGroupContent(
   group: ReminderGroup,
   duesById: Map<string, Due>,
   peopleById: Map<string, Person>
-): { title: string; body: string } {
+): { title: string; body: string; dueIds: string[] } {
   const lines: string[] = [];
   for (const id of group.dueIds.slice(0, MAX_LINES)) {
     const due = duesById.get(id);
@@ -85,5 +85,6 @@ export function buildGroupContent(
       lines.length > 0
         ? lines.join('\n')
         : 'Time to review your dues.',
+    dueIds: [...group.dueIds],
   };
 }

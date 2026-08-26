@@ -56,9 +56,9 @@ export function DashboardScreen() {
     lentItems.activeTotal > 0;
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} safeBottom={false}>
       <ScreenHeader title="Dues" subtitle="What you owe and what is owed to you" />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 96 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}>
         {!hasAnyContent ? (
           <View style={{ marginTop: 24 }}>
             <EmptyState

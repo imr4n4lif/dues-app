@@ -112,7 +112,13 @@ export async function resyncAllReminders(
       for (const trigger of triggersFor(group.config)) {
         try {
           const id = await Notifications.scheduleNotificationAsync({
-            content: { title: content.title, body: content.body },
+            content: {
+              title: content.title,
+              body: content.body,
+              // Embedded so catch-up delivery can detect which dues were
+              // actually delivered vs swallowed by the OS.
+              data: { dueIds: content.dueIds },
+            },
             trigger,
           });
           registryRows.push({

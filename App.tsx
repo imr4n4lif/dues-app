@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer, Theme as NavTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -6,6 +8,10 @@ import { SettingsProvider, useSettings } from './src/context/SettingsContext';
 import { DataProvider, useData } from './src/context/DataProvider';
 import { ThemeModeProvider, useTheme } from './src/theme/ThemeProvider';
 import { RootNavigator } from './src/navigation/RootNavigator';
+
+// Hold the native splash until the database and settings are loaded, so the
+// user never sees an empty window flash between splash and first UI frame.
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function ThemedNavigation() {
   const { colors, isDark } = useTheme();
@@ -42,6 +48,13 @@ function ThemedNavigation() {
 
 function DataGate() {
   const { ready } = useData();
+
+  useEffect(() => {
+    if (ready) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [ready]);
+
   if (!ready) return null;
   return <RootNavigator />;
 }

@@ -90,7 +90,7 @@ export function AllDuesScreen({ route }: Props) {
     navigation.getParent()?.navigate('DueDetails', { dueId });
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} safeBottom={false}>
       <ScreenHeader
         title="All dues"
         right={
@@ -128,7 +128,8 @@ export function AllDuesScreen({ route }: Props) {
       </View>
 
       <FlatList
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 96 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}
         data={visibleDues}
         keyExtractor={(d) => d.id}
         ListEmptyComponent={
@@ -201,6 +202,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sortRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     minHeight: 48,
     justifyContent: 'center',
   },

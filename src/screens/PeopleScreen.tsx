@@ -69,14 +69,15 @@ export function PeopleScreen({ navigation }: Props) {
   const nav = useNavigation<BottomTabNavigationProp<TabParamList>>();
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} safeBottom={false}>
       <ScreenHeader title="People" subtitle="Everyone you borrow from and lend to" />
       <View style={{ paddingHorizontal: 16 }}>
         <SearchBar value={query} onChangeText={setQuery} placeholder="Search people" />
       </View>
 
       <FlatList
-        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 14, paddingBottom: 96 }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 14, paddingBottom: 80 }}
         data={rows}
         keyExtractor={(r) => r.person.id}
         keyboardShouldPersistTaps="handled"
@@ -148,8 +149,8 @@ export function PeopleScreen({ navigation }: Props) {
         accessibilityLabel="Add person"
         style={[styles.fab, { backgroundColor: colors.accent, borderRadius: radius.pill, bottom: spacing.xxl, right: spacing.xl }]}
       >
-        <Ionicons name="person-add" size={20} color="#FFFFFF" />
-        <Text style={styles.fabLabel}>Add</Text>
+        <Ionicons name="person-add" size={20} color={colors.onAccent} />
+        <Text style={[styles.fabLabel, { color: colors.onAccent }]}>Add</Text>
       </Pressable>
     </Screen>
   );

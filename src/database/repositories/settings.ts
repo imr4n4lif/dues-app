@@ -52,6 +52,46 @@ export async function loadRawSettingsMap(): Promise<Record<string, string>> {
   return Object.fromEntries(rows.map((r) => [r.key, r.value]));
 }
 
+/** Generic boolean flag store for one-time prompts (key prefixed 'flag.'). */
+export async function getExtraFlag(key: string): Promise<boolean> {
+  const db = await getDatabase();
+  const row = await db.getFirstAsync<{ value: string }>(
+    `SELECT value FROM settings WHERE key = ?`,
+    `flag.${key}`
+  );
+  return row?.value === '1';
+}
+
+export async function setExtraFlag(key: string, value: boolean): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync(
+    `INSERT INTO settings (key, value) VALUES (?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+    `flag.${key}`,
+    value ? '1' : '0'
+  );
+}
+
+/** Generic string store for internal bookkeeping (key prefixed 'state.'). */
+export async function getExtraValue(key: string): Promise<string | null> {
+  const db = await getDatabase();
+  const row = await db.getFirstAsync<{ value: string }>(
+    `SELECT value FROM settings WHERE key = ?`,
+    `state.${key}`
+  );
+  return row?.value ?? null;
+}
+
+export async function setExtraValue(key: string, value: string): Promise<void> {
+  const db = await getDatabase();
+  await db.runAsync(
+    `INSERT INTO settings (key, value) VALUES (?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+    `state.${key}`,
+    value
+  );
+}
+
 export async function restoreRawSettings(entries: Record<string, string>): Promise<void> {
   const db = await getDatabase();
   await db.withTransactionAsync(async () => {

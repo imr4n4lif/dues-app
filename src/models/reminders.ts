@@ -11,6 +11,40 @@ function atTime(base: Date, hour: number, minute: number): number {
   return t.getTime();
 }
 
+function dayMatchesConfig(day: Date, config: ReminderConfig): boolean {
+  switch (config.frequency) {
+    case 'daily':
+      return true;
+    case 'weekly':
+      return config.weekday != null && toIsoWeekday(day.getDay()) === config.weekday;
+    case 'monthly': {
+      if (config.dayOfMonth == null) return false;
+      const dom = config.dayOfMonth;
+      const lastDay = new Date(day.getFullYear(), day.getMonth() + 1, 0).getDate();
+      // Exact match, or clamp-to-last-day behaviour for short months.
+      return day.getDate() === Math.min(dom, lastDay);
+    }
+    case 'custom':
+      return config.weekdays?.includes(toIsoWeekday(day.getDay())) ?? false;
+  }
+}
+
+/**
+ * Most recent occurrence strictly BEFORE `beforeTs`.
+ * Mirrors nextOccurrence so catch-up logic can detect missed slots.
+ */
+export function previousOccurrence(config: ReminderConfig, beforeTs: number): number | null {
+  const before = new Date(beforeTs);
+  for (let back = 0; back < 8; back += 1) {
+    const day = new Date(before.getFullYear(), before.getMonth(), before.getDate() - back);
+    if (dayMatchesConfig(day, config)) {
+      const ts = atTime(day, config.hour, config.minute);
+      if (ts < beforeTs) return ts;
+    }
+  }
+  return null;
+}
+
 /**
  * Next local occurrence of a reminder strictly after `from`.
  * Monthly dates beyond a month's length fire on the last day of that month.

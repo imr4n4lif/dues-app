@@ -59,6 +59,16 @@ export async function requestPermissionIfNeeded(): Promise<NotificationPermissio
   return checkPermissionState();
 }
 
+/**
+ * Requests notification permission when the OS hasn't answered yet.
+ * Called automatically on first launch — Android 13+ shows the standard
+ * "Allow notifications" dialog here.
+ */
+export async function ensureRuntimePermission(): Promise<NotificationPermissionState> {
+  if (IS_EXPO_GO) return 'unsupported';
+  return requestPermissionIfNeeded();
+}
+
 export async function ensureAndroidChannel(): Promise<void> {
   if (Platform.OS !== 'android' || IS_EXPO_GO) return;
   await Notifications.setNotificationChannelAsync(REMINDER_CHANNEL_ID, {

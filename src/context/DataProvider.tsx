@@ -46,9 +46,13 @@ import { computeItemSummary } from '../models/items';
 import { getDueStatusInfo, DueStatusInfo } from '../models/status';
 import { resyncAllReminders } from '../notifications/scheduler';
 import {
+  ensureRuntimePermission,
   initializeNotificationHandler,
   requestPermissionIfNeeded,
 } from '../notifications/permissions';
+import { registerCatchUpTask, runReminderCatchUp } from '../notifications/catchUp';
+import * as IntentLauncher from 'expo-intent-launcher';
+import { getExtraFlag, setExtraFlag } from '../database/repositories/settings';
 import { DEFAULT_CATEGORY_NAMES } from '../constants/categories';
 import {
   Category,
@@ -231,16 +235,42 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       await seedDefaultCategories(DEFAULT_CATEGORY_NAMES);
       await refresh();
       if (!cancelled) setReady(true);
-      scheduleResync();
+
+      // First-launch permission flow: ask for notifications, then offer the
+      // one-tap battery exemption (aggressive OEM skins kill background
+      // alarms otherwise). Both happen once, natively.
+      const perm = await ensureRuntimePermission();
+      if (perm === 'granted') {
+        await runResync();
+        await runReminderCatchUp();
+        await registerCatchUpTask();
+        try {
+          const alreadyPrompted = await getExtraFlag('batteryDialogShown');
+          if (!alreadyPrompted) {
+            await IntentLauncher.startActivityAsync(
+              IntentLauncher.ActivityAction.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+              { data: 'package:com.dues.app' }
+            );
+          }
+          await setExtraFlag('batteryDialogShown', true);
+        } catch {
+          // Dialog unavailable (some tablets/Go devices) — Settings still offers it.
+        }
+      } else {
+        scheduleResync();
+        await registerCatchUpTask();
+      }
     })().catch(() => {
       if (!cancelled) setReady(true);
     });
 
-    // Reconcile notifications whenever the app comes back to the foreground —
-    // covers OS permission changes made outside the app.
+    // Reconcile notifications + deliver any missed reminders whenever the app
+    // comes back to the foreground — covers OS permission changes and the
+    // "swiped away on aggressive OEM" case.
     const appStateSub = AppState.addEventListener('change', (state) => {
       if (state === 'active') {
         void runResync();
+        void runReminderCatchUp();
       }
     });
 

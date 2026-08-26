@@ -29,63 +29,68 @@ export interface PaletteColors {
   scrim: string;
 }
 
+/**
+ * Emerald-forward palette — calm warm neutrals with a confident green accent
+ * that reads "settled/money" in both themes. Borrowed keeps an amber hue,
+ * lent shifts to sky blue so the two directions stay unmistakable.
+ */
 export const lightPalette: PaletteColors = {
-  background: '#F6F7F9',
+  background: '#F8F9F8',
   surface: '#FFFFFF',
-  surfaceMuted: '#F0F2F5',
-  textPrimary: '#101828',
-  textSecondary: '#475467',
-  textTertiary: '#98A2B3',
-  border: '#E4E7EC',
-  borderStrong: '#D0D5DD',
+  surfaceMuted: '#F1F3F1',
+  textPrimary: '#141A17',
+  textSecondary: '#4B5563',
+  textTertiary: '#9CA3AF',
+  border: '#E5E7EB',
+  borderStrong: '#D1D5DB',
 
-  accent: '#4F46E5',
-  accentSoft: '#EEF0FE',
+  accent: '#0E9F6E',
+  accentSoft: '#E3F5EE',
   onAccent: '#FFFFFF',
 
-  borrowed: '#C2620A',
-  borrowedSoft: '#FDF0DF',
-  lent: '#0E8F80',
-  lentSoft: '#E3F6F3',
+  borrowed: '#B45309',
+  borrowedSoft: '#FCF0DF',
+  lent: '#0369A1',
+  lentSoft: '#E3F0FA',
 
   success: '#15803D',
   successSoft: '#E7F6EC',
   warning: '#B45309',
-  warningSoft: '#FCF1DE',
+  warningSoft: '#FBF1DE',
   danger: '#DC2626',
   dangerSoft: '#FDECEC',
   info: '#2563EB',
   infoSoft: '#EAF1FE',
 
-  scrim: 'rgba(16, 24, 40, 0.45)',
+  scrim: 'rgba(20, 26, 23, 0.45)',
 };
 
 export const darkPalette: PaletteColors = {
-  background: '#0E1116',
-  surface: '#161B22',
-  surfaceMuted: '#1D242E',
-  textPrimary: '#F2F4F7',
-  textSecondary: '#98A2B3',
-  textTertiary: '#667085',
-  border: '#272F3B',
-  borderStrong: '#39414E',
+  background: '#0D1117',
+  surface: '#161D22',
+  surfaceMuted: '#1E272E',
+  textPrimary: '#F0F3F1',
+  textSecondary: '#9BA5A0',
+  textTertiary: '#6B7570',
+  border: '#273135',
+  borderStrong: '#3A464B',
 
-  accent: '#818CF8',
-  accentSoft: 'rgba(129, 140, 248, 0.16)',
-  onAccent: '#0E1116',
+  accent: '#3DD68C',
+  accentSoft: 'rgba(61, 214, 140, 0.15)',
+  onAccent: '#08110D',
 
   borrowed: '#F5A524',
-  borrowedSoft: 'rgba(245, 165, 36, 0.14)',
-  lent: '#33D6C3',
-  lentSoft: 'rgba(51, 214, 195, 0.12)',
+  borrowedSoft: 'rgba(245, 165, 36, 0.13)',
+  lent: '#58B6FF',
+  lentSoft: 'rgba(88, 182, 255, 0.13)',
 
-  success: '#5BD975',
-  successSoft: 'rgba(91, 217, 117, 0.14)',
+  success: '#4ADE80',
+  successSoft: 'rgba(74, 222, 128, 0.13)',
   warning: '#FBBF24',
   warningSoft: 'rgba(251, 191, 36, 0.14)',
-  danger: '#F97066',
+  danger: '#F87171',
   dangerSoft: 'rgba(249, 112, 102, 0.15)',
-  info: '#61A6FA',
+  info: '#60A5FA',
   infoSoft: 'rgba(97, 166, 250, 0.14)',
 
   scrim: 'rgba(0, 0, 0, 0.6)',

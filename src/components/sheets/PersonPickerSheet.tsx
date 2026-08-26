@@ -25,7 +25,6 @@ export function PersonPickerSheet({
   const { colors, radius, spacing, typography } = useTheme();
   const data = useData();
   const [query, setQuery] = useState('');
-  // With no people at all, jump straight into create mode — there is nothing to pick from.
   const [creating, setCreating] = useState(() => data.people.length === 0);
   const [newName, setNewName] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -64,8 +63,8 @@ export function PersonPickerSheet({
   return (
     <BottomSheet visible={visible} onClose={onClose} title="Select person">
       {!creating ? (
-        <>
-          <View style={{ paddingHorizontal: spacing.xl }}>
+        <View style={{ flex: 1 }}>
+        <View style={{ paddingHorizontal: spacing.xl }}>
             <SearchBar
               value={query}
               onChangeText={setQuery}
@@ -82,7 +81,7 @@ export function PersonPickerSheet({
             </View>
           </View>
           <FlatList
-            style={{ marginTop: spacing.md }}
+            style={{ marginTop: spacing.md, flex: 1 }}
             data={results}
             keyExtractor={(p) => p.id}
             keyboardShouldPersistTaps="handled"
@@ -124,7 +123,7 @@ export function PersonPickerSheet({
                     },
                   ]}
                 >
-                  No people match “{query.trim()}”
+                  No people match "{query.trim()}"
                 </Text>
               ) : (
                 <Text
@@ -142,7 +141,7 @@ export function PersonPickerSheet({
               )
             }
           />
-        </>
+        </View>
       ) : (
         <View style={{ paddingHorizontal: spacing.xl }}>
           <TextField

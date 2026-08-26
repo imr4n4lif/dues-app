@@ -9,8 +9,8 @@ interface FABProps {
   label?: string;
 }
 
-export function FAB({ onPress, icon = 'add', label = 'Add due' }: FABProps) {
-  const { colors, radius, spacing } = useTheme();
+export function FAB({ onPress, icon = 'add', label = 'New due' }: FABProps) {
+  const { colors, radius, spacing, typography } = useTheme();
   return (
     <Pressable
       onPress={onPress}
@@ -19,7 +19,7 @@ export function FAB({ onPress, icon = 'add', label = 'Add due' }: FABProps) {
       style={({ pressed }) => [
         styles.fab,
         {
-          backgroundColor: pressed ? colors.accent : colors.accent,
+          backgroundColor: colors.accent,
           borderRadius: radius.pill,
           bottom: spacing.xxl,
           right: spacing.xl,
@@ -28,8 +28,8 @@ export function FAB({ onPress, icon = 'add', label = 'Add due' }: FABProps) {
         },
       ]}
     >
-      <Ionicons name={icon} size={22} color="#FFFFFF" />
-      <Text style={styles.label}>{'New due'}</Text>
+      <Ionicons name={icon} size={22} color={colors.onAccent} />
+      <Text style={[typography.bodySemibold, { color: colors.onAccent }]}>New due</Text>
     </Pressable>
   );
 }
@@ -46,11 +46,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.22,
     shadowRadius: 6,
-  },
-  label: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    lineHeight: 20,
-    fontWeight: '600',
   },
 });

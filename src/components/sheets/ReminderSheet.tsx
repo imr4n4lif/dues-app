@@ -13,10 +13,12 @@ import {
 } from '../../types';
 import {
   describeReminderTime,
+  formatDateTime,
   formatTimeOfDay,
   weekdayLabel,
   weekdayShortLabel,
 } from '../../utils/datetime';
+import { nextOccurrence } from '../../models/reminders';
 import { validateReminderConfig } from '../../services/validation';
 
 const FREQUENCIES: readonly { value: ReminderFrequency; label: string }[] = [
@@ -94,10 +96,14 @@ export function ReminderSheet({ visible, onClose, value, onSave }: ReminderSheet
     }
   })();
 
-  const preview =
+  const previewBase =
     frequency === 'weekly'
       ? `Every ${weekdayLabel(weekday)} at ${formatTimeOfDay(draft.hour, draft.minute)}`
       : describeReminderTime(draft);
+  const nextAt = nextOccurrence(draft, Date.now() + 30_000); // 30s grace for saving
+  const preview = nextAt
+    ? `${previewBase} · next: ${formatDateTime(nextAt)}`
+    : previewBase;
 
   const handleSave = () => {
     if (!enabled) {

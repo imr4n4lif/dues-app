@@ -8,9 +8,11 @@ interface ScreenProps {
   children: React.ReactNode;
   /** Disable horizontal padding (screens handle their own). */
   padded?: boolean;
+  /** Add safe-area bottom padding (default true). Set false for tab screens where the tab bar handles it. */
+  safeBottom?: boolean;
 }
 
-export function Screen({ children, padded = true }: ScreenProps) {
+export function Screen({ children, padded = true, safeBottom = true }: ScreenProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   return (
@@ -19,7 +21,7 @@ export function Screen({ children, padded = true }: ScreenProps) {
         styles.screen,
         { backgroundColor: colors.background },
         padded && styles.padded,
-        { paddingBottom: insets.bottom },
+        safeBottom && { paddingBottom: insets.bottom },
       ]}
     >
       {children}

@@ -24,6 +24,8 @@ import {
   NormalizedBackup,
 } from '../services/backup';
 import { shareExportedBackup } from '../services/backup';
+import { setExtraFlag } from '../database/repositories/settings';
+import * as IntentLauncher from 'expo-intent-launcher';
 import { getCurrency } from '../constants/currencies';
 import { IS_EXPO_GO } from '../notifications/environment';
 import { ThemePreference } from '../types';
@@ -107,12 +109,18 @@ export function SettingsScreen({ navigation }: Props) {
     await setNotificationsEnabled(next);
     if (next) {
       const state = await data.enableNotificationsFlow();
-      if (state !== 'granted') {
-        setSnackbar(
-          state === 'denied'
-            ? 'Notifications are blocked in system settings'
-            : 'Enable notifications to receive reminders'
-        );
+      if (state === 'granted') {
+        try {
+          await IntentLauncher.startActivityAsync(
+            IntentLauncher.ActivityAction.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+            { data: 'package:com.dues.app' }
+          );
+          await setExtraFlag('batteryDialogShown', true);
+        } catch {}
+      } else if (state === 'denied') {
+        setSnackbar('Notifications are blocked in system settings');
+      } else if (state === 'unsupported') {
+        setSnackbar('Expo Go cannot deliver scheduled reminders');
       }
     } else {
       data.refreshReminders();
@@ -120,9 +128,9 @@ export function SettingsScreen({ navigation }: Props) {
   };
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} safeBottom={false}>
       <ScreenHeader title="Settings" subtitle="Preferences, reminders & data" />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 48 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 48 }}>
         <SectionHeader title="General" />
         <Card>
           <Row

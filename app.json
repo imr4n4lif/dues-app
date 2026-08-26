@@ -7,11 +7,6 @@
     "userInterfaceStyle": "automatic",
     "scheme": "dues",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#F6F7F9"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -23,11 +18,13 @@
       "package": "com.dues.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#4F46E5"
+        "backgroundColor": "#FFFFFF"
       },
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
         "SCHEDULE_EXACT_ALARM",
+        "USE_EXACT_ALARM",
+        "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
         "POST_NOTIFICATIONS"
       ]
     },
@@ -35,11 +32,22 @@
       [
         "expo-notifications",
         {
-          "color": "#4F46E5"
+          "color": "#0E9F6E"
         }
       ],
       "expo-sqlite",
-      "expo-font"
+      "expo-font",
+      "expo-background-task",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#F6F7F9"
+        }
+      ],
+      "./plugins/withExactAlarmPlugin"
     ],
     "extra": {
       "eas": {
