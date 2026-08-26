@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+.expo-shared/
+
+# native build output
+android/
+ios/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+expo-debug.log*
+
+# test / coverage
+coverage/
+
+# env files
+.env
+.env.*
+
+# TypeScript
+*.tsbuildinfo
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# local editor files
+.vscode/
+.idea/
