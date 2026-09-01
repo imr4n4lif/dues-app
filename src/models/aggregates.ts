@@ -42,7 +42,8 @@ export function aggregateMoneyByCurrency(
         dueCount: 0,
       } satisfies CurrencyMoneyTotals);
     existing.totalMinor += info.money?.totalMinor ?? 0;
-    existing.settledMinor += info.money?.paidMinor ?? 0;
+    // When manually settled (no payment records), the full amount was received.
+    existing.settledMinor += info.settled ? (info.money?.totalMinor ?? 0) : (info.money?.paidMinor ?? 0);
     // A settled due (fully paid or explicitly marked) owes nothing anymore,
     // even when its raw remaining figure is non-zero (manual settlement).
     existing.remainingMinor += info.settled ? 0 : info.remainingMinor ?? 0;

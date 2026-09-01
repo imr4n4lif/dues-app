@@ -423,8 +423,27 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   );
 
   const setDueManuallySettled = useCallback(
-    async (due: Due, settled: boolean) =>
-      touchDue(due, (d) => ({ ...d, manuallySettledAt: settled ? Date.now() : null })),
+    async (due: Due, settled: boolean) => {
+      if (settled && due.kind === 'money') {
+        // Create a payment for the remaining amount so "Received" reflects it.
+        const existing = paymentsByDueIdRef.current.get(due.id) ?? [];
+        const { remainingMinor } = computeMoneySummary(due, existing);
+        if (remainingMinor > 0) {
+          const payment: Payment = {
+            id: newId(),
+            dueId: due.id,
+            amountMinor: remainingMinor,
+            currencyCode: due.currencyCode ?? '',
+            note: null,
+            paidAt: Date.now(),
+            createdAt: Date.now(),
+          };
+          await insertPayment(payment);
+        }
+      }
+      // For items or unmarking, keep the manual flag.
+      await touchDue(due, (d) => ({ ...d, manuallySettledAt: settled ? Date.now() : null }));
+    },
     [touchDue]
   );
 
