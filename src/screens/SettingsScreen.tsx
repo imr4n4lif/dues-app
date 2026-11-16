@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { GapsItLogo } from '../components/GapsItLogo';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -230,8 +231,27 @@ export function SettingsScreen({ navigation }: Props) {
         <Card>
           <Row icon="apps-outline" label="App" value="Dues" />
           <Row icon="information-circle-outline" label="Version" value={Constants.expoConfig?.version ?? '1.0.0'} />
+          <View style={styles.row}>
+            <Ionicons name="construct-outline" size={17} color={colors.textSecondary} />
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.bodyMedium,
+                { flex: 1, marginLeft: spacing.sm + 4, color: colors.textPrimary },
+              ]}
+            >
+              Developed by
+            </Text>
+            <View style={{ marginLeft: 8 }}>
+              <GapsItLogo height={24} />
+            </View>
+          </View>
+          <Row icon="shield-checkmark-outline" label="Rights" value="All rights reserved" />
           <Text style={[typography.caption, { color: colors.textTertiary, marginTop: spacing.md, marginLeft: 2, lineHeight: 18 }]}>
             Dues is a simple, local-first tracker for money and things you borrow or lend. All data stays on this device — no account required. Back up regularly using Export.
+          </Text>
+          <Text style={[typography.caption, { color: colors.textTertiary, marginTop: spacing.sm, marginLeft: 2, lineHeight: 18 }]}>
+            © {new Date().getFullYear()} GAPS IT. All rights reserved.
           </Text>
         </Card>
       </ScrollView>
