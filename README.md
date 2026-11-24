@@ -1,6 +1,18 @@
 # Dues
 
-A local-first tracker for money and things you **borrow** or **lend** — built with React Native, Expo SDK 54 and TypeScript. No account, no backend, no internet required.
+A local-first tracker for money and things you **borrow** or **lend** — built with React Native, Expo SDK 54 and TypeScript.
+
+Simple by design: no account, no backend, no internet. Open it, add a due, and you're done. Everything stays on your device.
+
+## Screenshots
+
+| Dashboard | All Dues | Add Due |
+| :---: | :---: | :---: |
+| <img src="assets/screenshots/home.png" width="240" alt="Dashboard" /> | <img src="assets/screenshots/all_dues.png" width="240" alt="All dues" /> | <img src="assets/screenshots/add_due.png" width="240" alt="Add due" /> |
+
+| People | Categories | Settings |
+| :---: | :---: | :---: |
+| <img src="assets/screenshots/people.png" width="240" alt="People" /> | <img src="assets/screenshots/categories.png" width="240" alt="Categories" /> | <img src="assets/screenshots/settings.png" width="240" alt="Settings" /> |
 
 ## Features
 
